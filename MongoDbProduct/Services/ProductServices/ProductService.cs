@@ -32,8 +32,28 @@ namespace MongoDbProduct.Services.ProductServices
 
         public async Task<List<ResultProductDto>> GetAllProductAsync()
         {
-            var values = await _productCollection.Find(x => true).ToListAsync();
-            return _mapper.Map<List<ResultProductDto>>(values);
+            var products = await _productCollection.Find(x => true).ToListAsync();
+
+            // Tüm kategorileri çekin
+            var categories = await _categoryCollection.Find(x => true).ToListAsync();
+
+            // Ürünleri map ederken CategoryName'i doldurun
+            var result = products.Select(product =>
+            {
+                var categoryName = categories.FirstOrDefault(c => c.CategoryId == product.CategoryId)?.CategoryName ?? "Kategori Yok";
+                return new ResultProductDto
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    ImageUrl = product.ImageUrl,
+                    Stock = product.Stock,
+                    Price = product.Price,
+                    CategoryId = product.CategoryId,
+                    CategoryName = categoryName // CategoryName burada dolduruluyor
+                };
+            }).ToList();
+
+            return result;
         }
 
         public async Task<GetByIdProductDto> GetByIdProductAsync(string id)

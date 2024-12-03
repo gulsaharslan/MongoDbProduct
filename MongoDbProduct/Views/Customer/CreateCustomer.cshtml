@@ -1,0 +1,42 @@
+﻿@model CreateCustomerDto
+
+@{
+    ViewData["Title"] = "CreateCustomer";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-10" style="margin-top:20px;">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Müşteri Ekle
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal " method="post">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">Müşteri Adı</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" asp-for="CustomerName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">Müşteri Adresi</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" asp-for="CustomerAddress">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">Müşteri Telefonu</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" asp-for="CustomerPhone">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Kaydet</button>
+                        </form>
+                    </div>
+                </section>
+                <!-- page end-->
+    </section>
+</section>

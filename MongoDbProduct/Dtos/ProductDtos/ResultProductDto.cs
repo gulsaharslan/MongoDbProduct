@@ -1,4 +1,5 @@
-﻿namespace MongoDbProduct.Dtos.ProductDtos
+﻿
+namespace MongoDbProduct.Dtos.ProductDtos
 {
     public class ResultProductDto
     {
@@ -8,5 +9,6 @@
         public int Stock { get; set; }
         public decimal Price { get; set; }
         public string CategoryId { get; set; }
+            public string CategoryName { get; set; }
     }
 }

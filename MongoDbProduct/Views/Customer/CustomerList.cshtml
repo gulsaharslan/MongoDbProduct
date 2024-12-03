@@ -1,0 +1,54 @@
+﻿@model List<ResultCustomerDto>
+
+@{
+    ViewData["Title"] = "CustomerList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-10" style="margin-top:20px;">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Müşteri Listesi
+                    </header>
+
+                    <table class="table table-striped table-advance table-hover">
+                        <tbody>
+                            <tr>
+                                <th><i class="icon_profile"></i> #</th>
+                                <th><i class="icon_calendar"></i> Müşteri Adı</th>
+                                <th><i class="icon_calendar"></i> Müşteri Adresi</th>
+                                <th><i class="icon_calendar"></i> Müşteri Telefonu</th>
+                                <th><i class="icon_cogs"></i> İşlemler</th>
+                            </tr>
+                            @foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.CustomerName</td>
+                                    <td>@item.CustomerAddress</td>
+                                    <td>@item.CustomerPhone</td>
+                                    <td>
+                                        <a href="/Customer/UpdateCustomer/@item.CustomerId" class="btn btn-warning">Güncelle</a>
+                                        <a href="/Customer/DeleteCustomer/@item.CustomerId" class="btn btn-danger">Sil</a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </section>
+                <a href="/Customer/CreateCustomer/" class="btn btn-primary">Müşteri Ekle</a>
+
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+</section>
+<!--main content end-->

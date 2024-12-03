@@ -1,4 +1,6 @@
-﻿namespace MongoDbProduct.Dtos.ProductDtos
+﻿using MongoDbProduct.Entities;
+
+namespace MongoDbProduct.Dtos.ProductDtos
 {
     public class CreateProductDto
     {
@@ -8,4 +10,5 @@
         public decimal Price { get; set; }
         public string CategoryId { get; set; }
     }
+
 }
