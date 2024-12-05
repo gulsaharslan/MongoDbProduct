@@ -14,5 +14,6 @@ namespace MongoDbProduct.Entities
         public decimal Price {  get; set; }
         public string CategoryId { get; set; }
         public Category Category { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

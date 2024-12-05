@@ -21,10 +21,14 @@ namespace MongoDbProduct.Mapping
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
             CreateMap<Customer, GetByIdCustomerDto>().ReverseMap();
 
-            CreateMap<Order, ResultOrderDto>().ReverseMap();
+            //CreateMap<Order, ResultOrderDto>().ReverseMap();
             CreateMap<Order, CreateOrderDto>().ReverseMap();
             CreateMap<Order, UpdateOrderDto>().ReverseMap();
             CreateMap<Order, GetByIdOrderDto>().ReverseMap();
+            CreateMap<Customer, ResultOrderDto>()
+            .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.CustomerName));
+            CreateMap<Product, ResultOrderDto>()
+             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductName));
 
             CreateMap<Product, ResultProductDto>().ReverseMap();
             CreateMap<Product, CreateProductDto>().ReverseMap();

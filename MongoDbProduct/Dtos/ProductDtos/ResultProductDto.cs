@@ -9,6 +9,6 @@ namespace MongoDbProduct.Dtos.ProductDtos
         public int Stock { get; set; }
         public decimal Price { get; set; }
         public string CategoryId { get; set; }
-            public string CategoryName { get; set; }
+        public string CategoryName { get; set; }
     }
 }

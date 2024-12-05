@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc;
 using MongoDbProduct.Dtos.CategoryDtos;
 using MongoDbProduct.Dtos.ProductDtos;
 using MongoDbProduct.Services.CategoryServices;
@@ -24,10 +25,10 @@ namespace MongoDbProduct.Controllers
         }
 
         [HttpGet]
-        public async Task <IActionResult> CreateProduct()
+        public async Task<IActionResult> CreateProduct()
         {
-            List<ResultCategoryDto> categoryList= await _categoryService.GetAllCategoryAsync();
-            ViewBag.categories=categoryList;
+            List<ResultCategoryDto> categoryList = await _categoryService.GetAllCategoryAsync();
+            ViewBag.categories = categoryList;
             return View();
         }
 
@@ -59,6 +60,40 @@ namespace MongoDbProduct.Controllers
         {
             await _productService.UpdateProductAsync(updateProductDto);
             return RedirectToAction("ProductList", "Product");
+        }
+
+        public async Task<IActionResult> DowloadProductListExcel()
+        {
+            var products = await _productService.GetAllProductAsync();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Ürün Listesi");
+                worksheet.Cell(1, 1).Value = "Ürün ID";
+                worksheet.Cell(1, 2).Value = "Ürün Adı";
+                worksheet.Cell(1, 3).Value = "Kategori Adı";
+                worksheet.Cell(1, 4).Value = "Fiyat";
+                worksheet.Cell(1, 5).Value = "Stok";
+
+                int row = 2;
+                foreach (var product in products)
+                {
+                    worksheet.Cell(row, 1).Value = product.ProductId;
+                    worksheet.Cell(row, 2).Value = product.ProductName;
+                    worksheet.Cell(row, 3).Value = product.CategoryName;
+                    worksheet.Cell(row, 4).Value = product.Price;
+                    worksheet.Cell(row, 5).Value = product.Stock;
+                    row++;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "UrunListesi.xlsx");
+                }
+            }
         }
     }
 }
