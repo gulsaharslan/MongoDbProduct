@@ -52,9 +52,37 @@ namespace MongoDbProduct.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateOrder(CreateOrderDto createOrderDto)
-        {
+        {   
+            var product=await _productService.GetByIdProductAsync(createOrderDto.ProductId);
+            if (createOrderDto.Piece > product.Stock)
+            {
+                ModelState.AddModelError("Piece", "Bu üründen " + product.Stock + " adet bulunmaktadır. Daha fazla sipariş veremezsiniz");
+
+
+                List<SelectListItem> customers = (from x in await _customerService.GetAllCustomerAsync()
+                                                  select new SelectListItem
+                                                  {
+                                                      Text = x.CustomerName,
+                                                      Value = x.CustomerId.ToString()
+                                                  }).ToList();
+                ViewBag.Customer = customers;
+
+                List<SelectListItem> products = (from x in await _productService.GetAllProductAsync()
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = x.ProductName,
+                                                     Value = x.ProductId.ToString()
+                                                 }).ToList();
+                ViewBag.Product = products;
+
+                return View(createOrderDto);
+            }
+
             await _orderService.CreateOrderAsync(createOrderDto);
+            await _productService.StockUpdateWhenOrderCreated(createOrderDto.ProductId, createOrderDto.Piece);
+            
             return RedirectToAction("OrderList");
+
         }
 
         [HttpGet]

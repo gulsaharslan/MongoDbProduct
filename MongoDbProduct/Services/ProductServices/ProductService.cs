@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MongoDbProduct.Dtos.ProductDtos;
 using MongoDbProduct.Entities;
 using MongoDbProduct.Settings;
+using NuGet.Packaging.Signing;
 
 namespace MongoDbProduct.Services.ProductServices
 {
@@ -60,6 +61,14 @@ namespace MongoDbProduct.Services.ProductServices
         {
             var value = await _productCollection.Find<Product>(x => x.ProductId == id).FirstOrDefaultAsync();
             return _mapper.Map<GetByIdProductDto>(value);
+        }
+
+        public async Task StockUpdateWhenOrderCreated(string id, int amount)
+        {
+            var product = await _productCollection.Find<Product>(x => x.ProductId == id).FirstOrDefaultAsync();
+            product.Stock = product.Stock - amount;
+            _mapper.Map<Product>(product);
+            await _productCollection.FindOneAndReplaceAsync(x => x.ProductId == id, product);
         }
 
         public async Task UpdateProductAsync(UpdateProductDto productDto)

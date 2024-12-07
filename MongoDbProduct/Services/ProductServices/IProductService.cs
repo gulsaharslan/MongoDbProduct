@@ -9,5 +9,6 @@ namespace MongoDbProduct.Services.ProductServices
         Task UpdateProductAsync(UpdateProductDto productDto);
         Task DeleteProductAsync(string id);
         Task<GetByIdProductDto> GetByIdProductAsync(string id);
+        Task StockUpdateWhenOrderCreated(string id, int amount);
     }
 }
