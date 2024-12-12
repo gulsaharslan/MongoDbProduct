@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDbProduct.Services.CategoryServices;
 using MongoDbProduct.Services.CustomerServices;
+using MongoDbProduct.Services.GoogleCloudStorageServices;
 using MongoDbProduct.Services.OrderServices;
 using MongoDbProduct.Services.ProductServices;
 using MongoDbProduct.Settings;
@@ -21,6 +22,10 @@ builder.Services.AddScoped<IDatabaseSettings>(sp =>
 {
     return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
 });
+
+builder.Services.Configure<GCSConfigOptions>(builder.Configuration);
+builder.Services.AddSingleton<IGoogleCloudStorageService, GoogleCloudStorageService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

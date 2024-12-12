@@ -1,8 +1,10 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office.Y2022.FeaturePropertyBag;
 using Microsoft.AspNetCore.Mvc;
 using MongoDbProduct.Dtos.CategoryDtos;
 using MongoDbProduct.Dtos.ProductDtos;
 using MongoDbProduct.Services.CategoryServices;
+using MongoDbProduct.Services.GoogleCloudStorageServices;
 using MongoDbProduct.Services.ProductServices;
 
 namespace MongoDbProduct.Controllers
@@ -11,11 +13,13 @@ namespace MongoDbProduct.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IGoogleCloudStorageService _googleCloudStorageService;
 
-        public ProductController(IProductService productService, ICategoryService categoryService)
+        public ProductController(IProductService productService, ICategoryService categoryService, IGoogleCloudStorageService googleCloudStorageService)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _googleCloudStorageService = googleCloudStorageService;
         }
 
         public async Task<IActionResult> ProductList()
@@ -35,8 +39,23 @@ namespace MongoDbProduct.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
         {
+
+            //Google Cloud Storage//
+            if(createProductDto.Photo !=null)
+            {
+                createProductDto.SavedFileName = GenerateFileNameToSave(createProductDto.Photo.FileName);
+                createProductDto.SavedUrl = await _googleCloudStorageService.UploadFileAsync(createProductDto.Photo, createProductDto.SavedFileName);
+            }
             await _productService.CreateProductAsync(createProductDto);
             return RedirectToAction("ProductList", "Product");
+        }
+
+
+        private string? GenerateFileNameToSave(string incomingFileName)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(incomingFileName);
+            var extension = Path.GetExtension(incomingFileName);
+            return $"{fileName}-{DateTime.Now.ToUniversalTime().ToString("yyyyMMddHHmmss")}{extension}";
         }
 
         [HttpGet]

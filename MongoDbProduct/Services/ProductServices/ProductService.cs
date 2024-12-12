@@ -46,7 +46,7 @@ namespace MongoDbProduct.Services.ProductServices
                 {
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,
-                    ImageUrl = product.ImageUrl,
+                    SavedUrl = product.SavedUrl,
                     Stock = product.Stock,
                     Price = product.Price,
                     CategoryId = product.CategoryId,

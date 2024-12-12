@@ -14,7 +14,7 @@
                         Ürün Güncelle
                     </header>
                     <div class="panel-body">
-                        <form class="form-horizontal " method="post" asp-controller="Product" asp-action="UpdateProduct">
+                        <form class="form-horizontal " method="post" asp-controller="Product" asp-action="UpdateProduct" enctype="multipart/form-data">
                             <input type="hidden" asp-for="ProductId">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">Ürün Adı</label>
@@ -22,12 +22,12 @@
                                     <input type="text" class="form-control" asp-for="ProductName">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            @*     <div class="form-group">
                                 <label class="col-sm-1 control-label">Ürün Görseli</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" asp-for="ImageUrl">
+                                    <input type="file" class="form-control" asp-for="UpdatedPhoto">
                                 </div>
-                            </div>
+                            </div> *@
                             <div class="form-group">
                                 <label for="CategoryId" class="col-sm-1 control-label">Ürün Kategorisi</label>
                                 <select asp-for="CategoryId" id="CategoryId" class="col-md-4">
@@ -54,5 +54,7 @@
                         </form>
                     </div>
                 </section>
+            </div>
+        </div>
     </section>
 </section>

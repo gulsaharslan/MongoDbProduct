@@ -14,7 +14,7 @@
                         Ürün Ekle
                     </header>
                     <div class="panel-body">
-                        <form class="form-horizontal " method="post">
+                        <form class="form-horizontal " method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">Ürün Adı</label>
                                 <div class="col-sm-5">
@@ -24,9 +24,12 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">Ürün Görseli</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" asp-for="ImageUrl">
+                                    <input type="file" class="form-control" asp-for="Photo">
                                 </div>
                             </div>
+                            <input name="SavedUrl" type="hidden" class="form-control" />
+                            <input name="SavedFileName" type="hidden" class="form-control" />
+
                             <div class="form-group">
                                 <label for="CategoryId" class="col-sm-1 control-label">Ürün Kategorisi</label>
                                 <select asp-for="CategoryId" id="CategoryId" class="col-md-4">
